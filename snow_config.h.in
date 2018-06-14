@@ -1,0 +1,74 @@
+#ifndef SNOW_CONFIG_H
+#define SNOW_CONFIG_H
+
+#define SNOW_VERSION_MAJOR @VERSION_MAJOR@
+#define SNOW_VERSION_MINOR @VERSION_MINOR@
+#define SNOW_VERSION_PATCH @VERSION_PATCH@
+
+#define SNOW_VERSION @VERSION_MAJOR@@VERSION_MINOR@@VERSION_PATCH@
+#define SNOW_VERSION_STRING "@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@"
+
+#cmakedefine SNOW_OPENGL_ES
+
+#cmakedefine SNOW_OS_WINDOWS
+#cmakedefine SNOW_OS_UNIX
+#cmakedefine SNOW_OS_ANDROID
+#cmakedefine SNOW_OS_LINUX
+#cmakedefine SNOW_OS_DRAWIN
+#cmakedefine SNOW_OS_IOS
+#cmakedefine SNOW_OS_MACOSX
+#cmakedefine SNOW_OS_FREEBSD
+#cmakedefine SNOW_OS_OPENBSD
+
+#cmakedefine SNOW_ARCH_32BITS
+#cmakedefine SNOW_ARCH_64BITS
+
+#cmakedefine SNOW_COMPILER_CLANG
+#cmakedefine SNOW_COMPILER_GCC
+#cmakedefine SNOW_COMPILER_MSVC
+#cmakedefine SNOW_COMPILER_MINGW
+
+#cmakedefine SNOW_BUILD_SHARED_LIBS
+
+#cmakedefine SNOW_ENCODING_UNICODE
+
+#ifdef SNOW_ENCODING_UNICODE 
+#if !defined(_UNICODE) && !defined(_TCHAR_H)
+#define _UNICODE
+#include <tchar.h>
+#else 
+#include <tchar.h>
+#endif
+#define snow_char wchar_t
+#define ST(string) _T(string)
+#else
+#define snow_char char
+#include <tchar.h>
+#define ST(string)  string      
+#endif
+
+#ifdef SNOW_BUILD_SHARED_LIBS
+#ifdef SNOW_OS_WINDOWS
+#ifdef SNOW_COMPILER_MINGW
+#define SNOW_API extern
+#else
+#ifdef SNOW_IMPL
+#define SNOW_API extern __declspec(dllexport)
+#else
+#define SNOW_API extern __declspec(dllimport)
+#endif
+#endif
+#else
+#define SNOW_API extern
+#endif
+#define SNOW_SHARED 1
+#else
+#define SNOW_STATIC 1
+#define SNOW_API extern
+#endif
+
+#ifdef SNOW_COMPILER_MSVC
+#define SNOW_MSVC_VERSION @SNOW_MSVC_VERSION@
+#endif 
+
+#endif // SNOW_CONFIG_H
